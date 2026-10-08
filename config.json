@@ -6,5 +6,5 @@
   "initPageUrl": "https://jiaowu.sicau.edu.cn/",
   "providerJSUrl": "",
   "parserJSUrl": "https://raw.githubusercontent.com/tj2874432427-ui/parse.js/refs/heads/main/parse.js",
-  "sortingBasis": 0
+  "sortingBasis": "0"
 }
