@@ -1,4 +1,4 @@
-function scheduleHtmlParser(html) {
+function pureScheduleParser(html) {
     // 用临时容器装载 provider 传来的 HTML 字符串
     var temp = document.createElement("div");
     temp.innerHTML = html;
@@ -113,8 +113,8 @@ function scheduleHtmlParser(html) {
     // ==========================================
     // 遍历主表格，提取数据
     // ==========================================
-    var courses = []; // 中间存储，按课程合并
-    var MAX_SECTION = 11; // 一天最多 11 节
+    var courses = [];
+    var MAX_SECTION = 11;
 
     var rows = mainTable.querySelectorAll("tr");
 
@@ -162,7 +162,6 @@ function scheduleHtmlParser(html) {
                 var weekNumArray = parseWeeks(weekInfoStr);
                 if (weekNumArray.length === 0) continue;
 
-                // duration 上限裁剪
                 var maxDuration = MAX_SECTION - start + 1;
                 if (duration > maxDuration) duration = maxDuration;
 
