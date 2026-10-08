@@ -1,0 +1,10 @@
+{
+  "uuid": "sicau_asp_parser_001",
+  "schoolName": "四川农业大学",
+  "authorName": "kaggler",
+  "systemName": "教务系统",
+  "initPageUrl": "https://jiaowu.sicau.edu.cn/",
+  "providerJSUrl": "",
+  "parserJSUrl": "https://raw.githubusercontent.com/tj2874432427-ui/parse.js/refs/heads/main/parse.js",
+  "sortingBasis": 0
+}
