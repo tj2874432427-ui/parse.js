@@ -1,4 +1,36 @@
 function pureScheduleParser(html) {
+    // ==========================================
+    // 生成标准 UUID
+    // ==========================================
+    function generateUUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0;
+            var v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+    // ==========================================
+    // 最终返回的数据结构（Pure 课程表要求）
+    // ==========================================
+    var importData = {
+        "version": 1,
+        "times": [
+            {"start": "08:10", "end": "08:55"},
+            {"start": "09:05", "end": "09:50"},
+            {"start": "10:10", "end": "10:55"},
+            {"start": "11:05", "end": "11:50"},
+            {"start": "14:20", "end": "15:05"},
+            {"start": "15:15", "end": "16:00"},
+            {"start": "16:20", "end": "17:05"},
+            {"start": "17:15", "end": "18:00"},
+            {"start": "19:30", "end": "20:15"},
+            {"start": "20:25", "end": "21:10"},
+            {"start": "21:20", "end": "22:05"}
+        ],
+        "courses": []
+    };
+
     // 用临时容器装载 provider 传来的 HTML 字符串
     var temp = document.createElement("div");
     temp.innerHTML = html;
@@ -36,12 +68,12 @@ function pureScheduleParser(html) {
     }
 
     // ==========================================
-    // 找课表主表格（从传入的 HTML 里找）
+    // 找课表主表格
     // ==========================================
     var mainTable = findMainTable(temp);
     if (!mainTable) {
         console.log("[parser] 未找到课表主表格");
-        return [];
+        return importData; // 返回对象，不是 []
     }
 
     // ==========================================
@@ -113,9 +145,6 @@ function pureScheduleParser(html) {
     // ==========================================
     // 遍历主表格，提取数据
     // ==========================================
-    var courses = [];
-    var MAX_SECTION = 11;
-
     var rows = mainTable.querySelectorAll("tr");
 
     for (var r = 0; r < rows.length; r++) {
@@ -162,7 +191,7 @@ function pureScheduleParser(html) {
                 var weekNumArray = parseWeeks(weekInfoStr);
                 if (weekNumArray.length === 0) continue;
 
-                var maxDuration = MAX_SECTION - start + 1;
+                var maxDuration = importData.times.length - start + 1;
                 if (duration > maxDuration) duration = maxDuration;
 
                 var timeObj = {
@@ -174,10 +203,10 @@ function pureScheduleParser(html) {
                 };
 
                 var existingCourse = null;
-                for (var m = 0; m < courses.length; m++) {
-                    if (courses[m].name === courseName &&
-                        courses[m].teacher === teacherName) {
-                        existingCourse = courses[m];
+                for (var m = 0; m < importData.courses.length; m++) {
+                    if (importData.courses[m].name === courseName &&
+                        importData.courses[m].teacher === teacherName) {
+                        existingCourse = importData.courses[m];
                         break;
                     }
                 }
@@ -187,7 +216,9 @@ function pureScheduleParser(html) {
                         existingCourse.times.push(timeObj);
                     }
                 } else {
-                    courses.push({
+                    // 【关键】添加 uuid 字段
+                    importData.courses.push({
+                        "uuid": generateUUID(),
                         "name": courseName,
                         "teacher": teacherName,
                         "times": [timeObj]
@@ -198,27 +229,7 @@ function pureScheduleParser(html) {
     }
 
     // ==========================================
-    // 转换成 Pure 课程表要求的扁平数组格式
+    // 直接返回 importData（对象，不是扁平数组）
     // ==========================================
-    var result = [];
-    for (var ci = 0; ci < courses.length; ci++) {
-        var course = courses[ci];
-        for (var ti = 0; ti < course.times.length; ti++) {
-            var time = course.times[ti];
-            var sections = [];
-            for (var s = 0; s < time.duration; s++) {
-                sections.push(time.start + s);
-            }
-            result.push({
-                name: course.name,
-                position: time.location,
-                teacher: course.teacher,
-                weeks: time.weekNum,
-                day: time.weekDay,
-                sections: sections
-            });
-        }
-    }
-
-    return result;
+    return importData;
 }
