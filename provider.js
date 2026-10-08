@@ -1,4 +1,4 @@
-function scheduleHtmlProvider(iframeContent = "", frameContent = "", dom = document) {
+function pureScheduleProvider(iframeContent = "", frameContent = "", dom = document) {
     // 1. 如果当前文档本身就是课表页（比如以后直接从 bxq.asp 进入）
     if (dom.querySelector("table[border='1'] td[width*='13.5']")) {
         return dom.body.outerHTML;
