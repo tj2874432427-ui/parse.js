@@ -1,0 +1,82 @@
+{
+  "api": "8",
+  "type": "anime",
+  "name": "ciyuancheng",
+  "version": "3.0",
+  "muliSources": false,
+  "useWebview": true,
+  "useNativePlayer": true,
+  "usePost": false,
+  "useLegacyParser": false,
+  "adBlocker": true,
+  "userAgent": "",
+  "baseURL": "https://www.cycani.org/",
+  "searchURL": "",
+  "searchList": "",
+  "searchName": "",
+  "searchResult": "",
+  "chapterRoads": "",
+  "chapterResult": "",
+  "referer": "https://www.cycani.org/",
+  "searchMode": "api",
+  "chapterMode": "api",
+  "searchApiConfig": {
+    "request": {
+      "method": "GET",
+      "url": "https://www.cycani.org/api/videos/search",
+      "headers": {
+        "Accept": "application/json",
+        "X-App-Name": "cyc_web",
+        "X-App-Version": "cycweb",
+        "X-Time-Zone": "Asia/Shanghai"
+      },
+      "query": {
+        "q": "@keyword",
+        "page": 1,
+        "page_size": 50
+      }
+    },
+    "listPath": "$.data.list[*]",
+    "namePath": "$.title",
+    "sourcePath": "$.video_id"
+  },
+  "chapterApiConfig": {
+    "request": {
+      "method": "GET",
+      "url": "https://www.cycani.org/api/videos/@source/sections",
+      "headers": {
+        "Accept": "application/json",
+        "X-App-Name": "cyc_web",
+        "X-App-Version": "cycweb",
+        "X-Time-Zone": "Asia/Shanghai"
+      },
+      "query": {
+        "player_code": "cychub",
+        "page": 1,
+        "page_size": 100
+      }
+    },
+    "format": "nested",
+    "roadsPath": "$.data",
+    "roadNamePath": "",
+    "episodesPath": "$.list[*]",
+    "episodeNamePath": "$.title",
+    "episodeUrlPath": "",
+    "episodePage": {
+      "url": "https://www.cycani.org/anime/@source/play/@episodeNumber",
+      "query": {
+        "from": "cychub"
+      }
+    }
+  },
+  "antiCrawlerConfig": {
+    "enabled": false,
+    "captchaType": 1,
+    "captchaImage": "",
+    "captchaInput": "",
+    "captchaButton": "",
+    "captchaDetectType": 1,
+    "captchaDetectValue": "",
+    "captchaScript": ""
+  }
+}
